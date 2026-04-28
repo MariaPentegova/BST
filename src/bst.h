@@ -31,4 +31,7 @@ bool bstInsert(BST* tree, int value);
 bool bstContains(BST* tree, int value);
 size_t bstSize(BST* tree);
 
+/* D Удаление */
+void bstDelete(BST* tree, int value);
+
 #endif

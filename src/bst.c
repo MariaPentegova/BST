@@ -103,6 +103,76 @@ bool bstInsert(BST* tree, int value)
     return true;
 }
 
+/* D Удаление */
+
+static BSTNode* findMinNode(BSTNode* node)
+{
+    if (node == NULL) {
+        return NULL;
+    }
+
+    while (node->left != NULL) {
+        node = node->left;
+    }
+    return node;
+}
+
+static BSTNode* deleteNodeRecursive(BSTNode* node, int value, bool* deleted)
+{
+    if (node == NULL) {
+        return NULL;
+    }
+
+    if (value < node->value) {
+        node->left = deleteNodeRecursive(node->left, value, deleted);
+        return node;
+    }
+
+    if (value > node->value) {
+        node->right = deleteNodeRecursive(node->right, value, deleted);
+        return node;
+    }
+
+    *deleted = true;
+
+    if (node->left == NULL && node->right == NULL) {
+        free(node);
+        return NULL;
+    }
+
+    if (node->left == NULL) {
+        BSTNode* right = node->right;
+        free(node);
+        return right;
+    }
+
+    if (node->right == NULL) {
+        BSTNode* left = node->left;
+        free(node);
+        return left;
+    }
+
+    BSTNode* successor = findMinNode(node->right);
+    node->value = successor->value;
+
+    bool dummyDeleted = false;
+    node->right = deleteNodeRecursive(node->right, successor->value, &dummyDeleted);
+    return node;
+}
+
+void bstDelete(BST* tree, int value)
+{
+    if (tree == NULL) {
+        return;
+    }
+
+    bool deleted = false;
+    tree->root = deleteNodeRecursive(tree->root, value, &deleted);
+    if (deleted) {
+        tree->size--;
+    }
+}
+
 int main(){
   return 0;
 }
