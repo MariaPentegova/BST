@@ -31,4 +31,7 @@ bool bstInsert(BST* tree, int value);
 bool bstContains(BST* tree, int value);
 size_t bstSize(BST* tree);
 
+/* F Проверка корректности */
+bool bstIsValid(BST* tree);
+
 #endif
