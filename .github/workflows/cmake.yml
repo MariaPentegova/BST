@@ -1,0 +1,34 @@
+name: CMake Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Удалить старый билд (очистка кэша)
+        run: |
+          rm -rf build
+          
+      # Создаем новую папку сборки
+      - name: Создать папку сборки
+        run: |
+          mkdir build
+
+      # Перейти в папку сборки и запустить CMake конфигурацию
+      - name: Конфигурация проекта
+        run: |
+          cd build
+          cmake .. # или: cmake -B build -S .
+          
+      # Построение проекта
+      - name: Построить
+        run: |
+          cd build
+          cmake --build .
