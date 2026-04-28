@@ -103,6 +103,31 @@ bool bstInsert(BST* tree, int value)
     return true;
 }
 
+/* F Проверка корректности BST */
+
+static bool isValidNode(BSTNode* node, long long minAllowed, long long maxAllowed)
+{
+    if (node == NULL) {
+        return true;
+    }
+
+    if ((long long)node->value <= minAllowed || (long long)node->value >= maxAllowed) {
+        return false;
+    }
+
+    return isValidNode(node->left, minAllowed, node->value)
+        && isValidNode(node->right, node->value, maxAllowed);
+}
+
+bool bstIsValid(BST* tree)
+{
+    if (tree == NULL) {
+        return true;
+    }
+
+    return isValidNode(tree->root, LLONG_MIN, LLONG_MAX);
+}
+
 int main(){
   return 0;
 }
