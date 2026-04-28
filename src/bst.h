@@ -31,4 +31,10 @@ bool bstInsert(BST* tree, int value);
 bool bstContains(BST* tree, int value);
 size_t bstSize(BST* tree);
 
+/* E Слияние */
+/* Возвращает новое дерево со всеми элементами из tree1 и tree2 без дубликатов */
+/* Если не хватило памяти возвращает NULL и выставляет errno ENOMEM */
+BST* bstMerge(BST* tree1, BST* tree2);
+
+
 #endif
