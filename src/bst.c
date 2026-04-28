@@ -103,6 +103,74 @@ bool bstInsert(BST* tree, int value)
     return true;
 }
 
+/* E Слияние двух деревьев */
+
+BST* bstMerge(BST* tree1, BST* tree2)
+{
+    BST* result = bstCreate();
+    if (result == NULL) {
+        errno = ENOMEM;
+        return NULL;
+    }
+
+    Iterator* it1 = iteratorInit(tree1);
+    Iterator* it2 = iteratorInit(tree2);
+
+    if (it1 == NULL || it2 == NULL) {
+        iteratorFree(it1);
+        iteratorFree(it2);
+        bstFree(result);
+        errno = ENOMEM;
+        return NULL;
+    }
+
+    errno = 0;
+    while (iteratorHasNext(it1)) {
+        int value = iteratorNext(it1);
+        if (errno == ENOMEM) {
+            iteratorFree(it1);
+            iteratorFree(it2);
+            bstFree(result);
+            return NULL;
+        }
+
+        errno = 0;
+        if (!bstInsert(result, value)) {
+            if (errno == ENOMEM) {
+                iteratorFree(it1);
+                iteratorFree(it2);
+                bstFree(result);
+                return NULL;
+            }
+        }
+    }
+
+    errno = 0;
+    while (iteratorHasNext(it2)) {
+        int value = iteratorNext(it2);
+        if (errno == ENOMEM) {
+            iteratorFree(it1);
+            iteratorFree(it2);
+            bstFree(result);
+            return NULL;
+        }
+
+        errno = 0;
+        if (!bstInsert(result, value)) {
+            if (errno == ENOMEM) {
+                iteratorFree(it1);
+                iteratorFree(it2);
+                bstFree(result);
+                return NULL;
+            }
+        }
+    }
+
+    iteratorFree(it1);
+    iteratorFree(it2);
+    return result;
+}
+
 int main(){
   return 0;
 }
