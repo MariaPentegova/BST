@@ -103,6 +103,43 @@ bool bstInsert(BST* tree, int value)
     return true;
 }
 
+int bstKthMin(BST* tree, int k)
+{
+    if (tree == NULL) {
+        errno = ERANGE;
+        return 0;
+    }
+
+    if (k <= 0) {
+        errno = EINVAL;
+        return 0;
+    }
+
+    if ((size_t)k > bstSize(tree)) {
+        errno = ERANGE;
+        return 0;
+    }
+
+    Iterator* it = iteratorInit(tree);
+    if (it == NULL) {
+        errno = ENOMEM;
+        return 0;
+    }
+
+    int value = 0;
+    errno = 0;
+    for (int i = 0; i < k; i++) {
+        value = iteratorNext(it);
+        if (errno == ENOMEM || errno == ERANGE) {
+            iteratorFree(it);
+            return 0;
+        }
+    }
+
+    iteratorFree(it);
+    return value;
+}
+
 int main(){
   return 0;
 }
