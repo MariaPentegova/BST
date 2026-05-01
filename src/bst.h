@@ -31,4 +31,20 @@ bool bstInsert(BST* tree, int value);
 bool bstContains(BST* tree, int value);
 size_t bstSize(BST* tree);
 
+/* H Итератор inorder без рекурсии */
+Iterator* iteratorInit(BST* tree);
+bool iteratorHasNext(Iterator* it);
+
+/*
+ Если итератор исчерпан или it == NULL возвращает 0 и выставляет errno ERANGE
+ Если во время продвижения не хватило памяти возвращает текущий элемент
+ Выставляет errno ENOMEM и переводит итератор в состояние failed
+ После этого дальнейшее использование итератора не допускается
+ iteratorHasNext(it) вернет false
+*/
+int iteratorNext(Iterator* it);
+
+void iteratorFree(Iterator* it);
+
+
 #endif
